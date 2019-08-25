@@ -6,6 +6,8 @@
     "rootDir": "",
     "sourceMap": true,
     "removeComments": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "declaration": false,
     "moduleResolution": "node",
     "typeRoots": [
