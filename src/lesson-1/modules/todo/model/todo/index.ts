@@ -1,9 +1,6 @@
 import { prop, Typegoose } from 'typegoose';
 
-export class Todo extends Typegoose {
+export class TodoItem extends Typegoose {
     @prop({ required: true })
     text: string;
-
-    @prop({ required: true })
-    done: boolean;
 }
