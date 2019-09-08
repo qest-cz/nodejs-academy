@@ -10,9 +10,9 @@ express()
     .engine('mustache', mustacheExpress())
     .set('view engine', 'mustache')
     .set('views', `${__dirname}/views`)
-    .use
-    // add session
-    ()
+    // .use
+    // // add session
+    // ()
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: false }))
     .use('/sessions', sessions)
