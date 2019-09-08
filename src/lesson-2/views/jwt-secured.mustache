@@ -1,0 +1,36 @@
+<body>
+    <h1>Hello {{username}}</h1>
+    <a href="/jwt/logout" onclick="logout(event)">Logout</a>
+    <a href="/jwt/login">Login</a>
+</body>
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('authCode')) {
+        localStorage.setItem("nodejsAcademy:token", urlParams.get('authCode'));
+        window.location.href= "/jwt/secured"
+    }
+    const logout = (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href= "/jwt/secured"
+    }
+
+    const main = async () => {
+        console.log(localStorage.getItem("nodejsAcademy:token"));
+        if (localStorage.getItem("nodejsAcademy:token")) {
+            const response = await fetch("/jwt/secret", {
+                method:"get",
+                headers: {
+                    Authorization: localStorage.getItem("nodejsAcademy:token")
+                },
+            }).then(response => response.json());
+            alert(`Hello ${response.username}`)
+        } else {
+            alert("You are not logged in")
+        }
+
+    }
+
+    main();
+</script>
