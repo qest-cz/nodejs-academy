@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
-import { Todo } from '../../modules/todo/model/todo';
+import { TodoItem } from '../../modules/todo/model/todo';
 
-mongoose.connect('mongodb://localhost:27017/test');
+// mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds213178.mlab.com:13178/nodejs-academy');
+mongoose.connect('mongodb://localhost:27017/academy');
 
-// tslint:disable:variable-name
-export const TodoModel = new Todo().getModelForClass(Todo);
+export const TodoItemModel = new TodoItem().getModelForClass(TodoItem);

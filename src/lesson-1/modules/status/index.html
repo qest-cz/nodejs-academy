@@ -1,0 +1,100 @@
+<html lang="cs">
+ <h1>Todo List</h1>
+ <form id="form">
+     <label>
+         Toto Item
+         <input name="todo" type="text"/>
+     </label>
+     <input type="submit" value="odeslat">
+ </form>
+ <ul id="list">
+ </ul>
+ <button onclick="loadList()">Load list</button>
+ <script>
+     const form = document.getElementById("form");
+     form.onsubmit = async (event) => {
+         event.preventDefault();
+         const newItemText = form.elements['todo'].value;
+
+         const response = await fetch("/list", {
+             method: "post",
+             body: JSON.stringify({
+                 data: newItemText
+             }),
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+         })
+
+         const data = await response.json();
+
+         addNewItemTolist(newItemText, data.id);
+
+     }
+
+     async function loadList() {
+         const data = await fetch("/list", {
+             method: "get",
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+         })
+
+         const items = await data.json();
+
+         document.getElementById("list").innerHTML = null;
+         items.map(item => {
+            addNewItemTolist(item.text, item.id)});
+     }
+
+     function addNewItemTolist(newItemText, id) {
+        const item = document.createElement("li");
+
+        const text = document.createTextNode(newItemText);
+
+        const deleteText = document.createTextNode(" X");
+        const deleteButton = document.createElement("p");
+        deleteButton.onclick = deleteItemFromlist;
+        deleteButton.className = "red";
+        deleteButton.id = id;
+        deleteButton.appendChild(deleteText);
+
+        const wrapper = document.createElement("div");
+
+        wrapper.className = "wrapper";
+        wrapper.appendChild(text);
+        wrapper.appendChild(deleteButton);
+
+        item.appendChild(wrapper);
+        document.getElementById("list").appendChild(item);
+     }
+
+     async function deleteItemFromlist(event) {
+         event.preventDefault();
+         await fetch("/list", {
+             method: "delete",
+             body: JSON.stringify({
+                 id: event.target.id
+             }),
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+         })
+
+         loadList();
+     }
+
+ </script>
+ <style>
+     .red {
+         color: red;
+         margin-left: 10px;
+         cursor: pointer;
+     }
+     .wrapper {
+         display: flex;
+         align-items: baseline;
+         height: 20px;
+     }
+ </style>
+</html>
